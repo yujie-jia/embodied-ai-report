@@ -1,0 +1,1440 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>具身智能前沿进展 - 交互式报告</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #10b981;
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --bg-card-hover: #334155;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --border: #334155;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --gradient-4: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* 导航栏 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            padding: 1rem 2rem;
+        }
+
+        .navbar-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        /* Hero区域 */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 6rem 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 30%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 70%, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -30px) rotate(5deg); }
+            66% { transform: translate(-20px, 20px) rotate(-5deg); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .hero .subtitle {
+            font-size: 1.4rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        .hero .description {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 统计卡片 */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+            animation: fadeInUp 0.8s ease-out 0.6s both;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 40px rgba(99, 102, 241, 0.2);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: var(--gradient-3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        /* 内容区域 */
+        .content-section {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-header p {
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* 时间线 */
+        .timeline {
+            position: relative;
+            padding-left: 3rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, var(--primary), var(--secondary));
+            border-radius: 3px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .timeline-item:hover {
+            background: var(--bg-card-hover);
+            transform: translateX(10px);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -3.6rem;
+            top: 1.5rem;
+            width: 16px;
+            height: 16px;
+            background: var(--primary);
+            border-radius: 50%;
+            border: 3px solid var(--bg-dark);
+        }
+
+        .timeline-year {
+            font-weight: bold;
+            color: var(--primary);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-desc {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .timeline-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .timeline-item.active .timeline-details {
+            max-height: 500px;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        /* 技术卡片网格 */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .tech-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tech-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-1);
+        }
+
+        .tech-card:nth-child(2)::before { background: var(--gradient-2); }
+        .tech-card:nth-child(3)::before { background: var(--gradient-3); }
+        .tech-card:nth-child(4)::before { background: var(--gradient-4); }
+
+        .tech-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border-color: var(--primary);
+        }
+
+        .tech-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tech-card:nth-child(2) .tech-icon { background: var(--gradient-2); }
+        .tech-card:nth-child(3) .tech-icon { background: var(--gradient-3); }
+        .tech-card:nth-child(4) .tech-icon { background: var(--gradient-4); }
+
+        .tech-title {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+        }
+
+        .tech-desc {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tech-tag {
+            background: rgba(99, 102, 241, 0.2);
+            color: var(--primary);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        /* 应用场景 */
+        .application-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .tab-btn:hover, .tab-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .app-content {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+        }
+
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .app-item {
+            background: var(--bg-card-hover);
+            padding: 1.5rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .app-item:hover {
+            transform: scale(1.02);
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .app-item h4 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .app-item p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* 企业展示 */
+        .company-slider {
+            overflow: hidden;
+            position: relative;
+        }
+
+        .company-track {
+            display: flex;
+            gap: 2rem;
+            animation: scroll 30s linear infinite;
+        }
+
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .company-card {
+            min-width: 280px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .company-card:hover {
+            border-color: var(--primary);
+            transform: scale(1.05);
+        }
+
+        .company-logo {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .company-name {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .company-desc {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        /* 挑战与展望 */
+        .challenge-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .challenge-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .challenge-card.challenge { border-left: 4px solid #ef4444; }
+        .challenge-card.opportunity { border-left: 4px solid var(--secondary); }
+
+        .challenge-badge {
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .challenge-card.challenge .challenge-badge {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .challenge-card.opportunity .challenge-badge {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--secondary);
+        }
+
+        .challenge-title {
+            font-size: 1.3rem;
+            margin: 1rem 0;
+        }
+
+        .challenge-text {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* 未来展望 */
+        .future-timeline {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin: 3rem 0;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .future-timeline::before {
+            content: '';
+            position: absolute;
+            top: 40px;
+            left: 10%;
+            right: 10%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        .future-item {
+            text-align: center;
+            flex: 1;
+            min-width: 200px;
+            position: relative;
+        }
+
+        .future-year {
+            width: 80px;
+            height: 80px;
+            background: var(--gradient-1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin: 0 auto 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .future-item:nth-child(2) .future-year { background: var(--gradient-2); }
+        .future-item:nth-child(3) .future-year { background: var(--gradient-3); }
+        .future-item:nth-child(4) .future-year { background: var(--gradient-4); }
+
+        .future-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* FAQ手风琴 */
+        .faq-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s ease;
+        }
+
+        .faq-question:hover {
+            background: var(--bg-card-hover);
+        }
+
+        .faq-question h3 {
+            font-size: 1.1rem;
+        }
+
+        .faq-icon {
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+        }
+
+        .faq-answer-content {
+            padding: 0 1.5rem 1.5rem;
+            color: var(--text-secondary);
+        }
+
+        /* 页脚 */
+        .footer {
+            background: var(--bg-card);
+            border-top: 1px solid var(--border);
+            padding: 3rem 2rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .footer p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* 回到顶部按钮 */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background: var(--primary-dark);
+            transform: translateY(-5px);
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .tech-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .future-timeline::before {
+                display: none;
+            }
+
+            .section-header h2 {
+                font-size: 2rem;
+            }
+        }
+
+        /* 搜索框 */
+        .search-container {
+            position: relative;
+            max-width: 500px;
+            margin: 2rem auto;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
+        }
+
+        .search-input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        /* 进度条 */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--gradient-1);
+            z-index: 1001;
+            transition: width 0.1s ease;
+        }
+    </style>
+</head>
+<body>
+    <!-- 进度条 -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="logo">Embodied AI</div>
+            <ul class="nav-links">
+                <li><a href="#overview">概述</a></li>
+                <li><a href="#history">发展历程</a></li>
+                <li><a href="#technology">核心技术</a></li>
+                <li><a href="#applications">应用场景</a></li>
+                <li><a href="#companies">产业格局</a></li>
+                <li><a href="#challenges">挑战与展望</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero区域 -->
+    <section class="hero" id="overview">
+        <div class="hero-content">
+            <h1>具身智能前沿进展</h1>
+            <p class="subtitle">Embodied Intelligence: The Future of AI</p>
+            <p class="description">
+                具身智能是人工智能与机器人学交叉的前沿领域，强调智能体通过身体与环境的动态交互实现自主学习和进化。
+                2025年，具身智能首次写入中国政府工作报告，标志着其正式成为国家战略的重要组成部分。
+            </p>
+
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-number">52.95亿</div>
+                    <div class="stat-label">2025年中国市场规模(元)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">93.6%</div>
+                    <div class="stat-label">年复合增长率</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">100亿台</div>
+                    <div class="stat-label">全球需求潜力</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">210+</div>
+                    <div class="stat-label">深圳相关企业数量</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 搜索框 -->
+    <div class="content-section">
+        <div class="search-container">
+            <input type="text" class="search-input" id="searchInput" placeholder="搜索具身智能相关内容...">
+        </div>
+    </div>
+
+    <!-- 发展历程 -->
+    <section class="content-section" id="history">
+        <div class="section-header">
+            <h2>发展历程</h2>
+            <p>从图灵的设想到今天的具身智能革命</p>
+        </div>
+
+        <div class="timeline">
+            <div class="timeline-item" onclick="toggleTimeline(this)">
+                <div class="timeline-year">1950年</div>
+                <div class="timeline-title">概念萌芽</div>
+                <div class="timeline-desc">图灵在《Computing Machinery and Intelligence》中首次提出具身智能设想</div>
+                <div class="timeline-details">
+                    图灵提出智能与物理形态相结合的理论基础，为后来的具身智能研究奠定了哲学和理论基础。
+                </div>
+            </div>
+
+            <div class="timeline-item" onclick="toggleTimeline(this)">
+                <div class="timeline-year">1986年</div>
+                <div class="timeline-title">行为式机器人</div>
+                <div class="timeline-desc">布鲁克斯提出行为式机器人概念，认为智能是具身化和情境化的</div>
+                <div class="timeline-details">
+                    从控制论角度出发，强调去除表征，推动具身智能以行为为核心发展。这一理论为具身智能奠定了基础，并开始影响当时的机器人学领域。
+                </div>
+            </div>
+
+            <div class="timeline-item" onclick="toggleTimeline(this)">
+                <div class="timeline-year">1991年</div>
+                <div class="timeline-title">行为智能</div>
+                <div class="timeline-desc">布鲁克斯提出"行为智能"(Behavior-Based AI)</div>
+                <div class="timeline-details">
+                    认为智能系统应直接通过与环境互动来体现其高度的适应性，而非依赖内部模型。这一突破性工作成为具身智能的一个里程碑。
+                </div>
+            </div>
+
+            <div class="timeline-item" onclick="toggleTimeline(this)">
+                <div class="timeline-year">2010-2020年</div>
+                <div class="timeline-title">深度学习突破</div>
+                <div class="timeline-desc">深度学习技术在机器人环境感知与自主能力方面取得重大进展</div>
+                <div class="timeline-details">
+                    研究者将深度学习与具身智能结合，通过深度强化学习赋予机器人自我探索和适应性行为的能力。这一时期拓宽了具身智能在导航、机械操作和人机互动等领域的应用范围。
+                </div>
+            </div>
+
+            <div class="timeline-item" onclick="toggleTimeline(this)">
+                <div class="timeline-year">2023年</div>
+                <div class="timeline-title">人形机器人热潮</div>
+                <div class="timeline-desc">英伟达黄仁勋指出具身智能是AI下一波浪潮</div>
+                <div class="timeline-details">
+                    特斯拉Optimus发布，OpenAI与Figure合作推出Figure 01人形机器人，展现具身智能在理解、判断和自我评估方面的前沿进展。
+                </div>
+            </div>
+
+            <div class="timeline-item" onclick="toggleTimeline(this)">
+                <div class="timeline-year">2025年</div>
+                <div class="timeline-title">国家战略</div>
+                <div class="timeline-desc">具身智能首次写入中国政府工作报告，成为新质生产力代表</div>
+                <div class="timeline-details">
+                    2025年3月5日，《国务院政府工作报告》提到培育具身智能等未来产业。宇树机器人亮相春晚，全球首场人形机器人马拉松举办，标志AI+机器人时代正式来临。
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 核心技术 -->
+    <section class="content-section" id="technology">
+        <div class="section-header">
+            <h2>核心技术突破</h2>
+            <p>驱动具身智能发展的关键技术栈</p>
+        </div>
+
+        <div class="tech-grid">
+            <div class="tech-card">
+                <div class="tech-icon">🧠</div>
+                <h3 class="tech-title">多模态大模型</h3>
+                <p class="tech-desc">
+                    大模型技术提升语义理解与决策能力，如Figure02机器人通过VLA模型实现零样本泛化，仅500小时训练即支持多机协作。多模态感知（视觉、听觉、触觉）增强环境交互能力。
+                </p>
+                <div class="tech-tags">
+                    <span class="tech-tag">VLA模型</span>
+                    <span class="tech-tag">零样本泛化</span>
+                    <span class="tech-tag">多模态融合</span>
+                </div>
+            </div>
+
+            <div class="tech-card">
+                <div class="tech-icon">🌍</div>
+                <h3 class="tech-title">世界模型</h3>
+                <p class="tech-desc">
+                    机器人"大脑"中形成的对世界运行规律的内在理解和预测能力。像人类的"物理直觉"一样，能够预测"如果我这样做，世界会发生什么"，是实现"预见性"和"创造性"行为的关键。
+                </p>
+                <div class="tech-tags">
+                    <span class="tech-tag">因果推理</span>
+                    <span class="tech-tag">物理直觉</span>
+                    <span class="tech-tag">预测能力</span>
+                </div>
+            </div>
+
+            <div class="tech-card">
+                <div class="tech-icon">🔬</div>
+                <h3 class="tech-title">物理模拟器</h3>
+                <p class="tech-desc">
+                    高保真的模拟器可以低成本、零风险地复现亿万种场景。机器人可以在其中进行海量训练，探索最优策略，极大地压缩了学习时间和成本。Sim2Real技术弥合模拟与现实的差距。
+                </p>
+                <div class="tech-tags">
+                    <span class="tech-tag">Sim2Real</span>
+                    <span class="tech-tag">NVIDIA Isaac</span>
+                    <span class="tech-tag">数字孪生</span>
+                </div>
+            </div>
+
+            <div class="tech-card">
+                <div class="tech-icon">🎯</div>
+                <h3 class="tech-title">端到端决策</h3>
+                <p class="tech-desc">
+                    将机器人的传感器输入直接映射到最终的动作指令，像人类看到飞来的球会下意识伸手去接。借鉴多模态大模型思想，实现"直觉式"行动，展现惊人的泛化能力和实用性。
+                </p>
+                <div class="tech-tags">
+                    <span class="tech-tag">强化学习</span>
+                    <span class="tech-tag">模仿学习</span>
+                    <span class="tech-tag">运动控制</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 应用场景 -->
+    <section class="content-section" id="applications">
+        <div class="section-header">
+            <h2>应用场景</h2>
+            <p>具身智能正在重塑各行各业</p>
+        </div>
+
+        <div class="application-tabs">
+            <button class="tab-btn active" onclick="showTab('industrial')">工业制造</button>
+            <button class="tab-btn" onclick="showTab('service')">商业服务</button>
+            <button class="tab-btn" onclick="showTab('medical')">医疗健康</button>
+            <button class="tab-btn" onclick="showTab('home')">家庭服务</button>
+            <button class="tab-btn" onclick="showTab('special')">特种作业</button>
+        </div>
+
+        <div class="tab-content active" id="industrial">
+            <div class="app-content">
+                <h3>工业制造 - 应用突破口</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                    工业制造成为具身智能应用的优先落地场景，因为工厂环境结构化、任务标准化。
+                    人形机器人在汽车工厂执行搬运、装配、质检等任务。
+                </p>
+                <div class="app-grid">
+                    <div class="app-item">
+                        <h4>汽车工厂实训</h4>
+                        <p>特斯拉Optimus、优必选WalkerS在蔚来工厂执行搬运、装配任务</p>
+                    </div>
+                    <div class="app-item">
+                        <h4>精密装配</h4>
+                        <p>柔性装配、视觉质检，呈现"由简到繁"的梯度推进</p>
+                    </div>
+                    <div class="app-item">
+                        <h4>设备维护</h4>
+                        <p>高危设备维护、复杂产品检测等传统自动化难以覆盖的场景</p>
+                    </div>
+                    <div class="app-item">
+                        <h4>智能巡检</h4>
+                        <p>7x24小时设备状态监测，预测性维护</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="service">
+            <div class="app-content">
+                <h3>商业服务 - 快速拓展</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                    商业服务领域正在加速落地，物流配送、公共空间管理、应急响应等领域快速铺开。
+                </p>
+                <div class="app-grid">
+                    <div class="app-item">
+                        <h4>物流配送</h4>
+                        <p>解决"最后一公里"配送难题，自动配送车和无人机协同作业</p>
+                    </div>
+                    <div class="app-item">
+                        <h4>酒店服务</h4>
+                        <p>客房配送、前台接待、行李搬运等服务</p>
+                    </div>
+                    <div class="app-item">
+                        <h4>餐厅烹饪</h4>
+                        <p>智能烹饪、配餐、送餐全流程自动化</p>
+                    </div>
+                    <div class="app-item">
+                        <h4>导览讲解</h4>
+                        <p>景区、博物馆智能导览，古迹巡逻</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="medical">
+            <div class="app-content">
+                <h3>医疗健康 - 深度变革</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                    从微创手术的精准辅助到个性化康复训练指导，从老年照护到远程医疗的实体交互支持，
+                    具身智能技术正在渗透医疗健康服务的全链条。
+                </p>
+                <div class="app-grid">
+                    <div class="app-item">
+                        <h4>手术机器人</h4>
+                        <p>微操作精度达0.1毫米级别，足以胜任神经外科手术</p>
+                    </div>
+                    <div class="app-item">
+                        <h4>康复训练</h4>
+                        <p>外骨骼设备根据患者实时反馈提供恰到好处的辅助</p>
+                    </div>
+                    <div class="app-item">
+                        <h4>老年照护</h4>
+                        <p>生活照料、健康监测、陪伴交流，缓解养老压力</p>
+                    </div>
+                    <div class="app-item">
+                        <h4>药品配送</h4>
+                        <p>医院内自动化药品配送，减少交叉感染</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="home">
+            <div class="app-content">
+                <h3>家庭服务 - 未来可期</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                    家庭服务场景虽然还在初期，但具备简单家务能力的通用家庭助手正逐步推向市场。
+                    在部分发达国家和地区，渗透率已超过15%。
+                </p>
+                <div class="app-grid">
+                    <div class="app-item">
+                        <h4>家务助手</h4>
+                        <p>清洁、搬运、整理等基础家务自动化</p>
+                    </div>
+                    <div class="app-item">
+                        <h4>陪伴护理</h4>
+                        <p>理解家庭成员个性化需求，提供贴心服务</p>
+                    </div>
+                    <div class="app-item">
+                        <h4>智能家居</h4>
+                        <p>与智能家居系统联动，实现全屋智能控制</p>
+                    </div>
+                    <div class="app-item">
+                        <h4>儿童教育</h4>
+                        <p>学习辅导、知识讲解、情感交流</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="special">
+            <div class="app-content">
+                <h3>特种作业 - 不可替代</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                    在核生化高危环境、深海探测、太空探索等人类难以直接涉足或风险极高的特殊场景，
+                    具身智能机器人正在成为无可替代的作业先锋。
+                </p>
+                <div class="app-grid">
+                    <div class="app-item">
+                        <h4>消防救援</h4>
+                        <p>火场侦察、人员搜救、危险品处置</p>
+                    </div>
+                    <div class="app-item">
+                        <h4>矿山作业</h4>
+                        <p>井下巡检、瓦斯检测、矿难救援</p>
+                    </div>
+                    <div class="app-item">
+                        <h4>深海探测</h4>
+                        <p>海底资源勘探、水下设施维护</p>
+                    </div>
+                    <div class="app-item">
+                        <h4>太空探索</h4>
+                        <p>星球表面探测、空间站维护</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 产业格局 -->
+    <section class="content-section" id="companies">
+        <div class="section-header">
+            <h2>产业格局</h2>
+            <p>"五路大军"同台竞技，构建全产业链生态</p>
+        </div>
+
+        <div class="company-slider">
+            <div class="company-track">
+                <div class="company-card">
+                    <div class="company-logo">🤖</div>
+                    <div class="company-name">特斯拉 Optimus</div>
+                    <div class="company-desc">复用汽车技术，灵巧手22自由度，计划2027年量产百万台</div>
+                </div>
+                <div class="company-card">
+                    <div class="company-logo">🦿</div>
+                    <div class="company-name">波士顿动力</div>
+                    <div class="company-desc">技术积淀深厚，Atlas展现惊人运动能力</div>
+                </div>
+                <div class="company-card">
+                    <div class="company-logo">🧑‍🦯</div>
+                    <div class="company-name">优必选 Walker</div>
+                    <div class="company-desc">专利全球第一，WalkerS进入车企产线实训</div>
+                </div>
+                <div class="company-card">
+                    <div class="company-logo">🐕</div>
+                    <div class="company-name">宇树科技 H1</div>
+                    <div class="company-desc">超轻量设计，扭矩达360N.m，亮相春晚</div>
+                </div>
+                <div class="company-card">
+                    <div class="company-logo">🦾</div>
+                    <div class="company-name">智元机器人</div>
+                    <div class="company-desc">2025年量产千台，与Physical Intelligence合作</div>
+                </div>
+                <div class="company-card">
+                    <div class="company-logo">💚</div>
+                    <div class="company-name">NVIDIA Isaac</div>
+                    <div class="company-desc">全栈布局：芯片、平台、模型、GR00T基础模型</div>
+                </div>
+                <div class="company-card">
+                    <div class="company-logo">🔵</div>
+                    <div class="company-name">Figure AI</div>
+                    <div class="company-desc">与OpenAI合作，Figure 01展现强大对话能力</div>
+                </div>
+                <div class="company-card">
+                    <div class="company-logo">🟢</div>
+                    <div class="company-name">Agility Robotics</div>
+                    <div class="company-desc">Digit机器人已部署亚马逊仓库</div>
+                </div>
+                <!-- 复制一份用于无缝滚动 -->
+                <div class="company-card">
+                    <div class="company-logo">🤖</div>
+                    <div class="company-name">特斯拉 Optimus</div>
+                    <div class="company-desc">复用汽车技术，灵巧手22自由度，计划2027年量产百万台</div>
+                </div>
+                <div class="company-card">
+                    <div class="company-logo">🦿</div>
+                    <div class="company-name">波士顿动力</div>
+                    <div class="company-desc">技术积淀深厚，Atlas展现惊人运动能力</div>
+                </div>
+                <div class="company-card">
+                    <div class="company-logo">🧑‍🦯</div>
+                    <div class="company-name">优必选 Walker</div>
+                    <div class="company-desc">专利全球第一，WalkerS进入车企产线实训</div>
+                </div>
+                <div class="company-card">
+                    <div class="company-logo">🐕</div>
+                    <div class="company-name">宇树科技 H1</div>
+                    <div class="company-desc">超轻量设计，扭矩达360N.m，亮相春晚</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 产业链图谱 -->
+        <div class="app-content" style="margin-top: 3rem;">
+            <h3>产业链全景</h3>
+            <div class="app-grid" style="margin-top: 1.5rem;">
+                <div class="app-item">
+                    <h4>上游：核心零部件</h4>
+                    <p>芯片、传感器、电机、减速器、丝杠等。国产化进程加速，谐波减速器份额超40%</p>
+                </div>
+                <div class="app-item">
+                    <h4>中游：系统集成</h4>
+                    <p>本体制造、软件开发、算法集成。兼容性问题仍需突破</p>
+                </div>
+                <div class="app-item">
+                    <h4>下游：应用场景</h4>
+                    <p>工业制造、商业服务、医疗健康、家庭服务、特种作业</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 挑战与展望 -->
+    <section class="content-section" id="challenges">
+        <div class="section-header">
+            <h2>挑战与展望</h2>
+            <p>机遇与挑战并存，未来可期</p>
+        </div>
+
+        <div class="challenge-grid">
+            <div class="challenge-card challenge">
+                <span class="challenge-badge">挑战</span>
+                <h3 class="challenge-title">能源效率问题</h3>
+                <p class="challenge-text">
+                    高算力的认知决策模块与精密的本体控制系统对能源供给提出严苛要求。
+                    具身智能系统的平均能耗比传统工业机器人高出3-5倍，严重限制移动场景应用。
+                </p>
+            </div>
+
+            <div class="challenge-card challenge">
+                <span class="challenge-badge">挑战</span>
+                <h3 class="challenge-title">模拟与现实的鸿沟</h3>
+                <p class="challenge-text">
+                    当前物理模拟器难以完全复刻真实世界的复杂性。
+                    光照变化、柔性物体形变、接触力学等细微差异导致算法在现实中"水土不服"。
+                </p>
+            </div>
+
+            <div class="challenge-card challenge">
+                <span class="challenge-badge">挑战</span>
+                <h3 class="challenge-title">安全与伦理</h3>
+                <p class="challenge-text">
+                    人机交互伦理问题、行为失控安全威胁、数据隐私保护。
+                    如何确保智能体目标与人类意图一致（Alignment问题）是世界级难题。
+                </p>
+            </div>
+
+            <div class="challenge-card opportunity">
+                <span class="challenge-badge">机遇</span>
+                <h3 class="challenge-title">政策支持</h3>
+                <p class="challenge-text">
+                    中国将具身智能定位为"新质生产力"核心，设立专项产业基金，建设多个创新中心。
+                    北京设千亿基金，上海开放应用场景。
+                </p>
+            </div>
+
+            <div class="challenge-card opportunity">
+                <span class="challenge-badge">机遇</span>
+                <h3 class="challenge-title">技术融合</h3>
+                <p class="challenge-text">
+                    大模型与多模态融合、世界模型、端到端决策等核心技术持续突破，
+                    为具身智能提供强大"大脑"支撑。
+                </p>
+            </div>
+
+            <div class="challenge-card opportunity">
+                <span class="challenge-badge">机遇</span>
+                <h3 class="challenge-title">市场需求</h3>
+                <p class="challenge-text">
+                    全球人口老龄化加剧、劳动力成本上升，智能服务机器人需求爆发式增长。
+                    预计2029年中国市场规模达750亿元。
+                </p>
+            </div>
+        </div>
+
+        <!-- 未来时间线 -->
+        <h3 style="text-align: center; margin: 4rem 0 2rem;">未来展望时间线</h3>
+        <div class="future-timeline">
+            <div class="future-item">
+                <div class="future-year">2025</div>
+                <p class="future-text">关键技术突破<br>创新体系建立</p>
+            </div>
+            <div class="future-item">
+                <div class="future-year">2026</div>
+                <p class="future-text">规模化试用<br>标志性产品推出</p>
+            </div>
+            <div class="future-item">
+                <div class="future-year">2027</div>
+                <p class="future-text">产业链安全<br>小批量量产</p>
+            </div>
+            <div class="future-item">
+                <div class="future-year">2030</div>
+                <p class="future-text">智能体普及率超90%<br>全面商业化</p>
+            </div>
+        </div>
+
+        <!-- FAQ -->
+        <h3 style="text-align: center; margin: 4rem 0 2rem;">常见问题</h3>
+        <div class="faq-container">
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <h3>什么是具身智能？</h3>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        具身智能（Embodied Intelligence）是指智能体通过身体与环境的互动产生的智能行为，
+                        强调智能体的认知和行动在物理环境中的相互依赖。从字面理解是"具身化的人工智能"，
+                        将人工智能融入机器人、新能源汽车等物理实体，为"大脑"赋予"身体"，
+                        使其拥有像人一样感知、学习和与环境动态交互的能力。
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <h3>具身智能与传统AI有什么区别？</h3>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        传统AI主要在虚拟环境中处理静态数据，而具身智能强调智能体必须拥有物理身体，
+                        通过与真实世界的实时交互来学习和进化。具身智能实现了"感知-行动闭环"，
+                        智能在实时中通过大脑、身体和环境的协调产生，行为不是单纯的内部计算结果，
+                        而是感知引导行动、行动又重塑感知的快速反馈循环。
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <h3>为什么人形机器人是具身智能的理想载体？</h3>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        人形机器人因适配人类环境而被视为通用人工智能（AGI）的终极载体。
+                        人类的环境、工具、设施都是为人形设计的，人形机器人可以直接使用现有基础设施，
+                        无需改造环境。同时，人形结构也更便于与人进行自然的交互和协作。
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <h3>中国具身智能发展的优势是什么？</h3>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        中国拥有完整的机器人产业链、丰富的应用场景、强大的政策支持和充足的人才储备。
+                        在核心零部件方面，国产化进程加速；在开源AI模型方面，中国开发者贡献占比已达17.1%，
+                        超过美国的15.8%。此外，中国已发布1509个大模型，数量居全球第一，占40%。
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <p>具身智能前沿进展 - 交互式报告 | 数据来源：2025世界机器人大会、2026年人工智能十大趋势等报告</p>
+        <p style="margin-top: 0.5rem;">最后更新：2025年2月</p>
+    </footer>
+
+    <!-- 回到顶部按钮 -->
+    <button class="back-to-top" id="backToTop" onclick="scrollToTop()">↑</button>
+
+    <script>
+        // 时间线展开/收起
+        function toggleTimeline(element) {
+            element.classList.toggle('active');
+        }
+
+        // Tab切换
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        // FAQ展开/收起
+        function toggleFaq(element) {
+            element.parentElement.classList.toggle('active');
+        }
+
+        // 回到顶部
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 滚动事件
+        window.addEventListener('scroll', () => {
+            const backToTop = document.getElementById('backToTop');
+            const progressBar = document.getElementById('progressBar');
+
+            // 显示/隐藏回到顶部按钮
+            if (window.scrollY > 500) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+
+            // 更新进度条
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercent = (scrollTop / docHeight) * 100;
+            progressBar.style.width = scrollPercent + '%';
+        });
+
+        // 搜索功能
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const allCards = document.querySelectorAll('.tech-card, .timeline-item, .app-item, .challenge-card');
+
+            allCards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                if (searchTerm && text.includes(searchTerm)) {
+                    card.style.boxShadow = '0 0 20px rgba(99, 102, 241, 0.5)';
+                    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                } else {
+                    card.style.boxShadow = '';
+                }
+            });
+        });
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // 添加滚动动画
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.tech-card, .timeline-item, .challenge-card, .stat-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
