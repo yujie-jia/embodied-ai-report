@@ -9,7 +9,7 @@
 [![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
 [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 
-[在线预览](#) | [English](README_EN.md)
+[在线预览](https://yujie-jia.github.io/embodied-ai-report/embodied-ai-report.html) | [English](README_EN.md)
 
 <img src="https://img.shields.io/badge/Topic-Embodied%20AI-6366f1?style=for-the-badge" alt="Topic">
 
